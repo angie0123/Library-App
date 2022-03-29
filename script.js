@@ -36,7 +36,11 @@ function renderBook(book) {
   const hasRead = document.createElement("div");
   hasRead.classList.add("hasRead");
   if (book.hasRead) hasRead.classList.add("true");
-
+  hasRead.addEventListener("click", () => {
+    hasRead.classList.toggle("true");
+    book.hasRead = !book.hasRead;
+    hasRead.textContent = book.hasRead ? "Completed" : "In Progress";
+  });
   const children = [title, author, pages, hasRead];
   for (let child of children) {
     if (child == pages) {
