@@ -22,13 +22,6 @@ body {
   grid-template-columns: 1fr 3fr;
 }
 
-.library {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  background: transparent;
-  grid-gap: 25px;
-}
-
 input[type="text"],
 input[type="number"],
 fieldset,
@@ -91,5 +84,45 @@ button.add-book:hover,
 }
 
 button.add-book:hover {
+  opacity: 0.6;
+}
+
+.library {
+  padding: 30px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid rgb(204, 191, 191);
+}
+
+.library .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-gap: 25px;
+  padding: 30px 0;
+}
+
+.book {
+  padding: 30px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 17px;
+  min-height: 250px;
+  background: #d9aa63;
+  line-height: 1.6rem;
+}
+
+.book:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.book .title {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.book .author {
+  font-size: 1.1rem;
   opacity: 0.6;
 }

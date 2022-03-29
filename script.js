@@ -17,7 +17,7 @@ myLibrary.push(
 );
 
 function renderLibrary() {
-  const library = document.querySelector(".library");
+  const library = document.querySelector(".grid");
   library.replaceChildren();
   for (let book of myLibrary) {
     library.appendChild(renderBook(book));
@@ -27,9 +27,25 @@ function renderLibrary() {
 function renderBook(book) {
   const card = document.createElement("div");
   card.classList.add("book");
-  card.textContent = `${book.title} by ${book.author}; ${book.pages} pages; ${
-    book.hasRead ? "Read" : "Not Read"
-  }`;
+  const title = document.createElement("div");
+  title.classList.add("title");
+  const author = document.createElement("div");
+  author.classList.add("author");
+  const pages = document.createElement("div");
+  pages.classList.add("pages");
+  const hasRead = document.createElement("div");
+  hasRead.classList.add("hasRead");
+
+  const children = [title, author, pages, hasRead];
+  for (let child of children) {
+    if (child == pages) {
+      child.textContent = `Pages: ${book[child.className]}`;
+    } else {
+      child.textContent = book[child.className];
+    }
+    card.appendChild(child);
+  }
+  hasRead.textContent = book.hasRead ? "Completed" : "In Progress";
   return card;
 }
 
