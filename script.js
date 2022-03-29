@@ -12,8 +12,8 @@ function addBookToLibrary(book) {
 }
 
 myLibrary.push(
-  new Book("A Game of Thrones", "George R.R. Martin", 694, true),
-  new Book("To Kill a Mockingbird", "Harper Lee", 281, false)
+  new Book("To Kill a Mockingbird", "Harper Lee", 281, false),
+  new Book("A Game of Thrones", "George R.R. Martin", 694, true)
 );
 
 function renderLibrary() {
@@ -35,6 +35,7 @@ function renderBook(book) {
   pages.classList.add("pages");
   const hasRead = document.createElement("div");
   hasRead.classList.add("hasRead");
+  if (book.hasRead) hasRead.classList.add("true");
 
   const children = [title, author, pages, hasRead];
   for (let child of children) {

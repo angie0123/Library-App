@@ -126,3 +126,23 @@ h1 {
   font-size: 1.1rem;
   opacity: 0.6;
 }
+
+.book .hasRead {
+  border-radius: 20px;
+  display: inline-block;
+  padding: 13px;
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.book .hasRead:hover {
+  cursor: pointer;
+}
+
+.book .hasRead.true {
+  background: transparent;
+  border: 2px solid green;
+  color: green;
+}
