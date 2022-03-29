@@ -5,6 +5,7 @@
   --primary: #1a1a23;
   --accent: #4a80f0;
   --bg: #fdfdfd;
+  --delete: #a55252;
   font-family: "Lato", sans-serif;
 }
 
@@ -15,7 +16,7 @@ body {
 .container {
   border-radius: 40px;
   width: 70vw;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
   background: linear-gradient(90deg, var(--primary) 25%, var(--bg) 0%);
   display: grid;
@@ -67,7 +68,9 @@ input[type="number"] {
   color: white;
   padding-bottom: 0.4rem;
 }
-
+label[for="has-read"]:hover {
+  cursor: pointer;
+}
 button.add-book {
   width: 95%;
   padding: 14px;
@@ -99,7 +102,7 @@ h1 {
 
 .library .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
   grid-gap: 25px;
   padding: 30px 0;
 }
@@ -109,8 +112,9 @@ h1 {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   border-radius: 17px;
   min-height: 250px;
-  background: #d9aa63;
   line-height: 1.6rem;
+  display: grid;
+  justify-items: center;
 }
 
 .book:hover {
@@ -127,22 +131,39 @@ h1 {
   opacity: 0.6;
 }
 
-.book .hasRead {
-  border-radius: 20px;
-  display: inline-block;
-  padding: 13px;
-  background: transparent;
-  border: 2px solid var(--accent);
-  color: var(--accent);
-  font-weight: bold;
+.book .buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  font-size: 1.1rem;
 }
 
-.book .hasRead:hover {
+.book .button {
+  border-radius: 20px;
+  padding: 13px;
+  font-weight: bold;
+  width: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book .button:hover {
   cursor: pointer;
 }
 
+.book .hasRead {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+
 .book .hasRead.true {
-  background: transparent;
-  border: 2px solid green;
-  color: green;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.book .button.delete {
+  background: var(--delete);
+  color: white;
 }
