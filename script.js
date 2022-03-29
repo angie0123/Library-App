@@ -7,6 +7,11 @@ function Book(title, author, pages, hasRead) {
   this.hasRead = hasRead;
 }
 
+Book.prototype.toggleHasRead = function () {
+  console.log(this.hasRead);
+  this.hasRead = !this.hasRead;
+};
+
 function addBookToLibrary(book) {
   myLibrary.push(book);
 }
@@ -33,16 +38,9 @@ function renderBook(book) {
   author.classList.add("author");
   const pages = document.createElement("div");
   pages.classList.add("pages");
-  const hasRead = document.createElement("div");
-  const buttonsContainer = document.createElement("div");
-  buttonsContainer.classList.add("buttons");
-  hasRead.classList.add("hasRead", "button");
-  if (book.hasRead) hasRead.classList.add("true");
-  hasRead.addEventListener("click", () => {
-    hasRead.classList.toggle("true");
-    book.hasRead = !book.hasRead;
-    hasRead.textContent = book.hasRead ? "Completed" : "In Progress";
-  });
+
+  const buttonsContainer = createButtons(book);
+
   const children = [title, author, pages];
   for (let child of children) {
     if (child == pages) {
@@ -52,16 +50,6 @@ function renderBook(book) {
     }
     card.appendChild(child);
   }
-  buttonsContainer.appendChild(hasRead);
-  hasRead.textContent = book.hasRead ? "Completed" : "In Progress";
-  const deleteBtn = document.createElement("div");
-  deleteBtn.classList.add("button", "delete");
-  deleteBtn.textContent = "Delete";
-  deleteBtn.addEventListener("click", () => {
-    myLibrary.splice(card.getAttribute("data-book-index"), 1);
-    renderLibrary();
-  });
-  buttonsContainer.appendChild(deleteBtn);
   card.setAttribute(
     "data-book-index",
     `${myLibrary.findIndex((item) => {
@@ -70,6 +58,40 @@ function renderBook(book) {
   );
   card.appendChild(buttonsContainer);
   return card;
+}
+
+function createButtons(book) {
+  const buttonsContainer = document.createElement("div");
+  buttonsContainer.classList.add("buttons");
+  const hasRead = createHasReadButton(book);
+  buttonsContainer.appendChild(hasRead);
+  const deleteBtn = createDeleteBtn();
+  buttonsContainer.appendChild(deleteBtn);
+  return buttonsContainer;
+}
+
+function createDeleteBtn() {
+  const deleteBtn = document.createElement("div");
+  deleteBtn.classList.add("button", "delete");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.addEventListener("click", () => {
+    myLibrary.splice(card.getAttribute("data-book-index"), 1);
+    renderLibrary();
+  });
+  return deleteBtn;
+}
+
+function createHasReadButton(book) {
+  const hasRead = document.createElement("div");
+  hasRead.classList.add("hasRead", "button");
+  hasRead.textContent = book.hasRead ? "Completed" : "In Progress";
+  if (book.hasRead) hasRead.classList.add("true");
+  hasRead.addEventListener("click", () => {
+    hasRead.classList.toggle("true");
+    book.toggleHasRead();
+    hasRead.textContent = book.hasRead ? "Completed" : "In Progress";
+  });
+  return hasRead;
 }
 
 const form = document.querySelector("form");
