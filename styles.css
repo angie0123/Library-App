@@ -2,10 +2,24 @@ body {
   background: blanchedalmond;
 }
 
+.container {
+  border-radius: 40px;
+  width: 70vw;
+  height: 100vh;
+  margin: 0 auto;
+  background: rgb(25, 25, 34);
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  padding: 30px;
+}
+
 .library {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  background: white;
-  height: 80vh;
+  background: transparent;
   grid-gap: 25px;
+}
+
+.form {
+  background: white;
 }
