@@ -1,3 +1,13 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  --primary: #1a1a23;
+  --accent: #4a80f0;
+  --bg: #fdfdfd;
+  font-family: "Lato", sans-serif;
+}
+
 body {
   background: blanchedalmond;
 }
@@ -7,10 +17,9 @@ body {
   width: 70vw;
   height: 100vh;
   margin: 0 auto;
-  background: rgb(25, 25, 34);
+  background: linear-gradient(90deg, var(--primary) 25%, var(--bg) 0%);
   display: grid;
-  grid-template-columns: 1fr 4fr;
-  padding: 30px;
+  grid-template-columns: 1fr 3fr;
 }
 
 .library {
@@ -20,6 +29,67 @@ body {
   grid-gap: 25px;
 }
 
+input[type="text"],
+input[type="number"],
+fieldset,
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  all: unset;
+}
+
 .form {
-  background: white;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+legend {
+  color: white;
+  font-size: 1.5rem;
+}
+
+fieldset {
+  display: grid;
+  grid-gap: 20px;
+  padding: 30px;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--bg);
+  border-radius: 3px;
+}
+
+.checkbox-input {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.form label {
+  display: block;
+  color: white;
+  padding-bottom: 0.4rem;
+}
+
+button.add-book {
+  width: 95%;
+  padding: 14px;
+  background: var(--accent);
+  border-radius: 13px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+button.add-book:hover,
+.form-input:hover {
+  cursor: pointer;
+}
+
+button.add-book:hover {
+  opacity: 0.6;
 }
