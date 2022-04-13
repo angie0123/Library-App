@@ -17,12 +17,12 @@ function addBookToLibrary(book) {
 }
 
 myLibrary.push(
-  new Book("To Kill a Mockingbird", "Harper Lee", 281, false),
-  new Book("A Game of Thrones", "George R.R. Martin", 694, true)
+  new Book('To Kill a Mockingbird', 'Harper Lee', 281, false),
+  new Book('A Game of Thrones', 'George R.R. Martin', 694, true)
 );
 
 function renderLibrary() {
-  const library = document.querySelector(".grid");
+  const library = document.querySelector('.grid');
   library.replaceChildren();
   for (let book of myLibrary) {
     library.appendChild(renderBook(book));
@@ -30,14 +30,14 @@ function renderLibrary() {
 }
 
 function renderBook(book) {
-  const card = document.createElement("div");
-  card.classList.add("book");
-  const title = document.createElement("div");
-  title.classList.add("title");
-  const author = document.createElement("div");
-  author.classList.add("author");
-  const pages = document.createElement("div");
-  pages.classList.add("pages");
+  const card = document.createElement('div');
+  card.classList.add('book');
+  const title = document.createElement('div');
+  title.classList.add('title');
+  const author = document.createElement('div');
+  author.classList.add('author');
+  const pages = document.createElement('div');
+  pages.classList.add('pages');
 
   const buttonsContainer = createButtons(book);
 
@@ -51,7 +51,7 @@ function renderBook(book) {
     card.appendChild(child);
   }
   card.setAttribute(
-    "data-book-index",
+    'data-book-index',
     `${myLibrary.findIndex((item) => {
       return item.title == book.title;
     })}`
@@ -61,8 +61,8 @@ function renderBook(book) {
 }
 
 function createButtons(book) {
-  const buttonsContainer = document.createElement("div");
-  buttonsContainer.classList.add("buttons");
+  const buttonsContainer = document.createElement('div');
+  buttonsContainer.classList.add('buttons');
   const hasRead = createHasReadButton(book);
   buttonsContainer.appendChild(hasRead);
   const deleteBtn = createDeleteBtn();
@@ -71,36 +71,38 @@ function createButtons(book) {
 }
 
 function createDeleteBtn() {
-  const deleteBtn = document.createElement("div");
-  deleteBtn.classList.add("button", "delete");
-  deleteBtn.textContent = "Delete";
-  deleteBtn.addEventListener("click", () => {
-    myLibrary.splice(card.getAttribute("data-book-index"), 1);
+  const deleteBtn = document.createElement('div');
+  deleteBtn.classList.add('button', 'delete');
+  deleteBtn.textContent = 'Delete';
+  deleteBtn.addEventListener('click', () => {
+    const button = event.target;
+    const book = button.parentElement.parentElement;
+    myLibrary.splice(book.getAttribute('data-book-index'), 1);
     renderLibrary();
   });
   return deleteBtn;
 }
 
 function createHasReadButton(book) {
-  const hasRead = document.createElement("div");
-  hasRead.classList.add("hasRead", "button");
-  hasRead.textContent = book.hasRead ? "Completed" : "In Progress";
-  if (book.hasRead) hasRead.classList.add("true");
-  hasRead.addEventListener("click", () => {
-    hasRead.classList.toggle("true");
+  const hasRead = document.createElement('div');
+  hasRead.classList.add('hasRead', 'button');
+  hasRead.textContent = book.hasRead ? 'Completed' : 'In Progress';
+  if (book.hasRead) hasRead.classList.add('true');
+  hasRead.addEventListener('click', () => {
+    hasRead.classList.toggle('true');
     book.toggleHasRead();
-    hasRead.textContent = book.hasRead ? "Completed" : "In Progress";
+    hasRead.textContent = book.hasRead ? 'Completed' : 'In Progress';
   });
   return hasRead;
 }
 
-const form = document.querySelector("form");
-form.addEventListener("submit", (event) => {
+const form = document.querySelector('form');
+form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const author = form.elements["author"].value;
-  const title = form.elements["title"].value;
-  const pages = form.elements["pages"].value;
-  const hasRead = form.elements["has-read"].checked;
+  const author = form.elements['author'].value;
+  const title = form.elements['title'].value;
+  const pages = form.elements['pages'].value;
+  const hasRead = form.elements['has-read'].checked;
   const book = new Book(author, title, pages, hasRead);
   addBookToLibrary(book);
   renderLibrary();
