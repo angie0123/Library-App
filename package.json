@@ -1,0 +1,24 @@
+{
+  "name": "library-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angie0123/Library-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/angie0123/Library-App/issues"
+  },
+  "homepage": "https://github.com/angie0123/Library-App#readme",
+  "dependencies": {
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
+  }
+}
