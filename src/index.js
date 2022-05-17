@@ -2,6 +2,18 @@ import './styles.css';
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from 'firebase/app';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  setDoc,
+  doc,
+  serverTimestamp,
+} from 'firebase/firestore';
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -31,12 +43,17 @@ function Book(title, author, pages, hasRead) {
 }
 
 Book.prototype.toggleHasRead = function () {
-  console.log(this.hasRead);
   this.hasRead = !this.hasRead;
 };
 
-function addBookToLibrary(book) {
-  myLibrary.push(book);
+async function addBookToFirebaseLibrary(book) {
+  try {
+    await addDoc(collection(getFirestore(), 'books'), {
+      ...book,
+    });
+  } catch (error) {
+    console.error('Error writing new message to Firebase database', error);
+  }
 }
 
 myLibrary.push(
@@ -46,10 +63,19 @@ myLibrary.push(
 
 function renderLibrary() {
   const library = document.querySelector('.grid');
-  library.replaceChildren();
-  for (let book of myLibrary) {
-    library.appendChild(renderBook(book));
-  }
+  const allBooksInFirestore = query(collection(getFirestore(), 'books'));
+
+  onSnapshot(allBooksInFirestore, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type !== 'removed') {
+        myLibrary.push(change.doc.data());
+      }
+    });
+    library.replaceChildren();
+    for (let book of myLibrary) {
+      library.appendChild(renderBook(book));
+    }
+  });
 }
 
 function renderBook(book) {
@@ -66,9 +92,10 @@ function renderBook(book) {
 
   const children = [title, author, pages];
   for (let child of children) {
-    if (child == pages) {
+    if (child === pages) {
       child.textContent = `Pages: ${book[child.className]}`;
     } else {
+      console.log(child, child.className, book[child.className]);
       child.textContent = book[child.className];
     }
     card.appendChild(child);
@@ -120,15 +147,14 @@ function createHasReadButton(book) {
 }
 
 const form = document.querySelector('form');
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
   const author = form.elements['author'].value;
   const title = form.elements['title'].value;
   const pages = form.elements['pages'].value;
   const hasRead = form.elements['has-read'].checked;
-  const book = new Book(author, title, pages, hasRead);
-  addBookToLibrary(book);
-  renderLibrary();
+  const book = new Book(title, author, pages, hasRead);
+  await addBookToFirebaseLibrary(book);
   form.reset();
 });
 
