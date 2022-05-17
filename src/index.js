@@ -1,3 +1,26 @@
+import './styles.css';
+// Import the functions you need from the SDKs you need
+
+import { initializeApp } from 'firebase/app';
+
+// TODO: Add SDKs for Firebase products that you want to use
+
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyAn1fQKVrCUSS4uhb8rsdMXtoiVhZ1y91U',
+  authDomain: 'library-9d005.firebaseapp.com',
+  projectId: 'library-9d005',
+  storageBucket: 'library-9d005.appspot.com',
+  messagingSenderId: '309927851294',
+  appId: '1:309927851294:web:7a8c9bdcb36a6eab56050f',
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
 let myLibrary = [];
 
 function Book(title, author, pages, hasRead) {

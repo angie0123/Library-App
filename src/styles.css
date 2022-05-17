@@ -16,8 +16,8 @@ body {
 .container {
   border-radius: 40px;
   width: 70vw;
-  min-height: 100vh;
-  margin: 0 auto;
+  height: 80vh;
+  margin: 50px auto 0 auto;
   background: linear-gradient(90deg, var(--primary) 25%, var(--bg) 0%);
   display: grid;
   grid-template-columns: 1fr 3fr;
@@ -93,6 +93,8 @@ button.add-book:hover {
 
 .library {
   padding: 30px;
+  height: 80vh;
+  overflow: scroll;
 }
 
 h1 {
