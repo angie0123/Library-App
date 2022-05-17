@@ -7,12 +7,9 @@ import {
   collection,
   addDoc,
   query,
-  orderBy,
-  limit,
   onSnapshot,
-  setDoc,
+  deleteDoc,
   doc,
-  serverTimestamp,
 } from 'firebase/firestore';
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -32,8 +29,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-let myLibrary = [];
+const db = getFirestore();
 
 function Book(title, author, pages, hasRead) {
   this.title = title;
@@ -46,9 +42,12 @@ Book.prototype.toggleHasRead = function () {
   this.hasRead = !this.hasRead;
 };
 
+//adding data
 async function addBookToFirebaseLibrary(book) {
+  const booksRef = collection(getFirestore(), 'Books');
   try {
-    await addDoc(collection(getFirestore(), 'books'), {
+    await (doc(booksRef),
+    {
       ...book,
     });
   } catch (error) {
@@ -56,29 +55,23 @@ async function addBookToFirebaseLibrary(book) {
   }
 }
 
-myLibrary.push(
-  new Book('To Kill a Mockingbird', 'Harper Lee', 281, false),
-  new Book('A Game of Thrones', 'George R.R. Martin', 694, true)
-);
-
+//reading data from db
 function renderLibrary() {
   const library = document.querySelector('.grid');
-  const allBooksInFirestore = query(collection(getFirestore(), 'books'));
+  const allBooksInFirestore = query(collection(db, 'Books'));
 
+  //adds listener to query
   onSnapshot(allBooksInFirestore, (snapshot) => {
-    snapshot.docChanges().forEach((change) => {
-      if (change.type !== 'removed') {
-        myLibrary.push(change.doc.data());
-      }
-    });
     library.replaceChildren();
-    for (let book of myLibrary) {
-      library.appendChild(renderBook(book));
-    }
+    snapshot.docs.forEach((doc) => {
+      library.appendChild(renderBook(doc));
+    });
   });
 }
 
-function renderBook(book) {
+function renderBook(doc) {
+  const book = doc.data();
+  const id = doc.id;
   const card = document.createElement('div');
   card.classList.add('book');
   const title = document.createElement('div');
@@ -95,17 +88,11 @@ function renderBook(book) {
     if (child === pages) {
       child.textContent = `Pages: ${book[child.className]}`;
     } else {
-      console.log(child, child.className, book[child.className]);
       child.textContent = book[child.className];
     }
     card.appendChild(child);
   }
-  card.setAttribute(
-    'data-book-index',
-    `${myLibrary.findIndex((item) => {
-      return item.title == book.title;
-    })}`
-  );
+  card.setAttribute('data-id', `${id}`);
   card.appendChild(buttonsContainer);
   return card;
 }
@@ -124,11 +111,9 @@ function createDeleteBtn() {
   const deleteBtn = document.createElement('div');
   deleteBtn.classList.add('button', 'delete');
   deleteBtn.textContent = 'Delete';
-  deleteBtn.addEventListener('click', () => {
-    const button = event.target;
-    const book = button.parentElement.parentElement;
-    myLibrary.splice(book.getAttribute('data-book-index'), 1);
-    renderLibrary();
+  deleteBtn.addEventListener('click', async (event) => {
+    const id = event.target.parentElement.parentElement.getAttribute('data-id');
+    await deleteDoc(doc(db, 'Books', id));
   });
   return deleteBtn;
 }
@@ -154,7 +139,7 @@ form.addEventListener('submit', async (event) => {
   const pages = form.elements['pages'].value;
   const hasRead = form.elements['has-read'].checked;
   const book = new Book(title, author, pages, hasRead);
-  await addBookToFirebaseLibrary(book);
+  const bookID = await addBookToFirebaseLibrary(book);
   form.reset();
 });
 
