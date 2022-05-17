@@ -44,12 +44,8 @@ Book.prototype.toggleHasRead = function () {
 
 //adding data
 async function addBookToFirebaseLibrary(book) {
-  const booksRef = collection(getFirestore(), 'Books');
   try {
-    await (doc(booksRef),
-    {
-      ...book,
-    });
+    await addDoc(collection(db, 'Books'), { ...book });
   } catch (error) {
     console.error('Error writing new message to Firebase database', error);
   }
@@ -139,7 +135,7 @@ form.addEventListener('submit', async (event) => {
   const pages = form.elements['pages'].value;
   const hasRead = form.elements['has-read'].checked;
   const book = new Book(title, author, pages, hasRead);
-  const bookID = await addBookToFirebaseLibrary(book);
+  await addBookToFirebaseLibrary(book);
   form.reset();
 });
 
